@@ -1,10 +1,13 @@
 package com.epam.ld.module2.testing;
 
+import java.util.Map;
+
 /**
  * The type Client.
  */
 public class Client {
     private String addresses;
+    private Map<String, String> params;
 
     /**
      * Gets addresses.
@@ -23,4 +26,8 @@ public class Client {
     public void setAddresses(String addresses) {
         this.addresses = addresses;
     }
+
+    public void setParams(Map<String, String> params) {
+        this.params = params;
+    };
 }
