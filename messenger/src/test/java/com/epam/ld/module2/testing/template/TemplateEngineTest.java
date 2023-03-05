@@ -2,13 +2,19 @@ package com.epam.ld.module2.testing.template;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 import com.epam.ld.module2.testing.Client;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class TemplateEngineTest {
 
@@ -107,6 +113,46 @@ class TemplateEngineTest {
 
         String expectedOutput = "Hello John, how are you today? é";
         assertEquals(expectedOutput, filledInTemplate);
+    }
+
+    @ParameterizedTest(name = "{2}")
+    @CsvSource(value = {
+            "Hello #{name}!;name=John;Hello John!",
+            "Hello #{name} #{last_name}!;name=John,last_name=Doe;Hello John Doe!"
+    }, delimiter = ';')
+    void testMessageGeneration(String templateStr, String paramsStr, String expected) {
+        Template template = new Template();
+        template.setValue(templateStr);
+        Map<String, String> params = stringToParams(paramsStr);
+        Client client = new Client();
+        client.setParams(params);
+        String actual = templateEngine.generateMessage(template, client);
+        assertEquals(expected, actual);
+    }
+
+    private Map<String, String> stringToParams(String paramsStr) {
+        Map<String, String> params = new HashMap<>();
+        String[] pairs = paramsStr.split(",");
+        for (String pair : pairs) {
+            String[] keyValue = pair.split("=");
+            params.put("#{" + keyValue[0] + "}", keyValue[1]);
+        }
+        return params;
+    }
+
+    @TestFactory
+    Stream<DynamicTest> testGenerateMessage() {
+        return Stream.of(
+                dynamicTest("replace single value", () -> {
+                    Template template = new Template();
+                    template.setValue("Hello #{name}!");
+                    Map<String, String> params = new HashMap<>();
+                    params.put("#{name}", "John");
+                    Client client = new Client();
+                    client.setParams(params);
+                    String actual = templateEngine.generateMessage(template, client);
+                    assertEquals("Hello John!", actual);
+                }));
     }
 
 }
