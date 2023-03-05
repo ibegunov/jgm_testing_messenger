@@ -60,7 +60,7 @@ public class Messenger {
         }
     }
 
-    private void sendFromConsole() throws IOException {
+    void sendFromConsole() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
         String templateStr = reader.readLine();
 
@@ -74,7 +74,7 @@ public class Messenger {
         sendMessage(client, template);
     }
 
-    private void sendFromFile(String inputFile, String outputFile) throws IOException {
+    void sendFromFile(String inputFile, String outputFile) throws IOException {
         Template template;
         Map<String, String> templateValues;
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile, StandardCharsets.UTF_8))) {

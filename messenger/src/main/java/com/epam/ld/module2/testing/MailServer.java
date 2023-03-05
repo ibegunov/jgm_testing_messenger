@@ -18,6 +18,8 @@ public class MailServer {
      * @throws IOException exception
      */
     public void send(String addresses, String messageContent) throws IOException {
+        messageContent = String.valueOf(messageContent);
+
         if (addresses != null) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(addresses, StandardCharsets.UTF_8))) {
                 writer.write(messageContent);
