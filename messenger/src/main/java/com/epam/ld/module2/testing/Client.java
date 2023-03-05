@@ -29,5 +29,9 @@ public class Client {
 
     public void setParams(Map<String, String> params) {
         this.params = params;
-    };
+    }
+
+    public Map<String, String> getParams() {
+        return params;
+    }
 }

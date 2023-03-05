@@ -5,9 +5,13 @@ package com.epam.ld.module2.testing.template;
  */
 public class Template {
 
-    String template;
+    private String value;
 
-    public void setTemplate(String template) {
-        this.template = template;
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
     }
 }

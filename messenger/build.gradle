@@ -93,3 +93,11 @@ tasks.withType(Pmd) {
     }
 }
 
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.epam.ld.module2.testing.Messenger'
+        )
+    }
+}
+
