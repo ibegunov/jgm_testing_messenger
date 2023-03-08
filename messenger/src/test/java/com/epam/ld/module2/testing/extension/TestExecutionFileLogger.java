@@ -3,6 +3,7 @@ package com.epam.ld.module2.testing.extension;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -15,7 +16,7 @@ public class TestExecutionFileLogger implements BeforeEachCallback, AfterEachCal
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
         File file = new File("test_log.txt");
-        writer = new BufferedWriter(new FileWriter(file, true));
+        writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8, true));
 
         String testName = context.getRequiredTestMethod().getName();
         writer.write("Test started: " + testName + " at " + LocalDateTime.now() + "\n");

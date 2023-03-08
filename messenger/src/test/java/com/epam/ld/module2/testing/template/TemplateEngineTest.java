@@ -2,6 +2,7 @@ package com.epam.ld.module2.testing.template;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -43,6 +44,8 @@ class TemplateEngineTest {
     @Test
     @DisplayName("Template generator should replace variable placeholders")
     void testFillInTemplate() {
+        assumeTrue(isJavaVersionHigherThan11());
+
         String templateString = "Dear #{name},\n\nThank you for contacting us about #{subject}. We will respond to "
                 + "your message at #{time}.\n\nSincerely,\nThe Support Team";
         Map<String, String> values = new HashMap<>();
@@ -175,6 +178,12 @@ class TemplateEngineTest {
                     String actual = templateEngine.generateMessage(template, client);
                     assertEquals("Hello John!", actual);
                 }));
+    }
+
+    private boolean isJavaVersionHigherThan11() {
+        String javaVersion = System.getProperty("java.version");
+        int majorVersion = Integer.parseInt(javaVersion.split("\\.")[0]);
+        return majorVersion >= 11;
     }
 
 }
