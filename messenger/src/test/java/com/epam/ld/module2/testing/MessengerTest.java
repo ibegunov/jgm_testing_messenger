@@ -9,15 +9,17 @@ import com.epam.ld.module2.testing.template.Template;
 import com.epam.ld.module2.testing.template.TemplateEngine;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 class MessengerTest {
 
+    @TempDir
+    File tempDir;
 
     @Test
     void testSendFromConsole() throws IOException {
@@ -41,8 +43,8 @@ class MessengerTest {
 
     @Test
     void testSendFromFile() throws IOException {
-        String inputFile = "test-input.txt";
-        String outputFile = "test-output.txt";
+        File inputFile = new File(tempDir, "test-input.txt");
+        File outputFile = new File(tempDir, "test-output.txt");
         String templateStr = "Hello #{name}, your order #{order} is confirmed.";
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(inputFile, StandardCharsets.UTF_8))) {
@@ -57,12 +59,9 @@ class MessengerTest {
                 .thenReturn("Hello John, your order 12345 is confirmed.");
 
         Messenger messenger = new Messenger(mailServer, templateEngine);
-        messenger.sendFromFile(inputFile, outputFile);
+        messenger.sendFromFile(inputFile.getPath(), outputFile.getPath());
 
-        verify(mailServer).send(outputFile, "Hello John, your order 12345 is confirmed.");
-
-        Files.deleteIfExists(Paths.get(inputFile));
-        Files.deleteIfExists(Paths.get(outputFile));
+        verify(mailServer).send(outputFile.getPath(), "Hello John, your order 12345 is confirmed.");
     }
 
 }
