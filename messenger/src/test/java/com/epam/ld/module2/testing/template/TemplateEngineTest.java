@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.epam.ld.module2.testing.Client;
+import com.epam.ld.module2.testing.extension.TestExecutionFileLogger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -21,9 +22,11 @@ import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+@ExtendWith(TestExecutionFileLogger.class)
 class TemplateEngineTest {
 
     private TemplateEngine templateEngine;
