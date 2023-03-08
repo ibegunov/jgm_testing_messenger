@@ -3,9 +3,12 @@ package com.epam.ld.module2.testing.template;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.epam.ld.module2.testing.Client;
 import java.util.HashMap;
@@ -46,6 +49,10 @@ class TemplateEngineTest {
 
         client.setParams(values);
         template.setValue(templateString);
+
+        // Partial mock example
+        templateEngine = mock(TemplateEngine.class);
+        when(templateEngine.generateMessage(any(), any())).thenCallRealMethod();
         String filledInTemplate = templateEngine.generateMessage(template, client);
 
         String expectedOutput = "Dear John,\n\nThank you for contacting us about your recent order. We will respond to your message at 3:00 PM.\n\nSincerely,\nThe Support Team";
