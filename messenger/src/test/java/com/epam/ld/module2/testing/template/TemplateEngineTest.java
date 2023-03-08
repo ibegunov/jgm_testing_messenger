@@ -3,14 +3,19 @@ package com.epam.ld.module2.testing.template;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import com.epam.ld.module2.testing.Client;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,7 +29,7 @@ class TemplateEngineTest {
 
     @BeforeEach
     public void setUp() {
-        templateEngine = new TemplateEngine();
+        templateEngine = spy(new TemplateEngine());
         client = new Client();
         template = new Template();
     }
@@ -46,6 +51,7 @@ class TemplateEngineTest {
         String expectedOutput = "Dear John,\n\nThank you for contacting us about your recent order. We will respond to your message at 3:00 PM.\n\nSincerely,\nThe Support Team";
 
         assertEquals(expectedOutput, filledInTemplate);
+        verify(templateEngine, times(1)).generateMessage(template, client);
     }
 
     @Test
@@ -84,6 +90,7 @@ class TemplateEngineTest {
     }
 
     @Test
+    @Tag("example")
     @DisplayName("Template generator should replace placeholder to placeholder")
     void testFillInTemplateSupportsRuntimePlaceholders() {
         String templateString = "Some text: #{value}";
@@ -113,6 +120,11 @@ class TemplateEngineTest {
 
         String expectedOutput = "Hello John, how are you today? é";
         assertEquals(expectedOutput, filledInTemplate);
+    }
+
+    @Test
+    @Disabled("Disabled test")
+    void testDisabled() {
     }
 
     @ParameterizedTest(name = "{2}")
